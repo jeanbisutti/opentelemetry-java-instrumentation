@@ -41,6 +41,7 @@ class KafkaClientDefaultTest extends KafkaClientPropagationBaseTest {
       runWithSpan("processing") {
         assert record.value() == greeting
         assert record.key() == null
+
       }
     }
 
