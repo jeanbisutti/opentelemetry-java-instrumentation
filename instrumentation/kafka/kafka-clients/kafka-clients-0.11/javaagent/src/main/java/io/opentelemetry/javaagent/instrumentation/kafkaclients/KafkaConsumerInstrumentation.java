@@ -36,10 +36,7 @@ public class KafkaConsumerInstrumentation implements TypeInstrumentation {
 
   @Override
   public void transform(TypeTransformer transformer) {
-    transformer.applyAdviceToMethod(
-        named("poll")
-            .and(isPublic())
-            .and(takesArguments(1))
+    transformer.applyAdviceToMethod(named("poll").and(isPublic()).and(takesArguments(1))
             .and(takesArgument(0, long.class).or(takesArgument(0, Duration.class)))
             .and(returns(named("org.apache.kafka.clients.consumer.ConsumerRecords"))),
         this.getClass().getName() + "$PollAdvice");
@@ -53,10 +50,10 @@ public class KafkaConsumerInstrumentation implements TypeInstrumentation {
     }
 
     @Advice.OnMethodExit(suppress = Throwable.class, onThrowable = Throwable.class)
-    public static void onExit(
-        @Advice.Enter Timer timer,
-        @Advice.Return ConsumerRecords<?, ?> records,
-        @Advice.Thrown Throwable error) {
+    public static void onExit(@Advice.Enter Timer timer,
+        @Advice.Return ConsumerRecords<?, ?> records, @Advice.Thrown Throwable error) {
+
+      System.out.println("PRINT - PollAdvice.onExit");
 
       // don't create spans when no records were received
       if (records == null || records.isEmpty()) {
@@ -65,29 +62,22 @@ public class KafkaConsumerInstrumentation implements TypeInstrumentation {
 
       Context parentContext = currentContext();
       if (consumerReceiveInstrumenter().shouldStart(parentContext, records)) {
-        Context context =
-            InstrumenterUtil.startAndEnd(
-                consumerReceiveInstrumenter(),
-                parentContext,
-                records,
-                null,
-                error,
-                timer.startTime(),
-                timer.now());
+        Context context = InstrumenterUtil.startAndEnd(consumerReceiveInstrumenter(), parentContext,
+            records, null, error, timer.startTime(), timer.now());
 
         // we're storing the context of the receive span so that process spans can use it as parent
         // context even though the span has ended
         // this is the suggested behavior according to the spec batch receive scenario:
         // https://github.com/open-telemetry/opentelemetry-specification/blob/main/specification/trace/semantic_conventions/messaging.md#batch-receiving
-        VirtualField<ConsumerRecords<?, ?>, Context> consumerRecordsContext =
-            VirtualField.find(ConsumerRecords.class, Context.class);
+        VirtualField<ConsumerRecords<?, ?>, Context> consumerRecordsContext = VirtualField.find(
+            ConsumerRecords.class, Context.class);
         consumerRecordsContext.set(records, context);
 
         // disable process tracing and store the receive span for each individual record too
         boolean previousValue = KafkaClientsConsumerProcessTracing.setEnabled(false);
         try {
-          VirtualField<ConsumerRecord<?, ?>, Context> consumerRecordContext =
-              VirtualField.find(ConsumerRecord.class, Context.class);
+          VirtualField<ConsumerRecord<?, ?>, Context> consumerRecordContext = VirtualField.find(
+              ConsumerRecord.class, Context.class);
           for (ConsumerRecord<?, ?> record : records) {
             consumerRecordContext.set(record, context);
           }

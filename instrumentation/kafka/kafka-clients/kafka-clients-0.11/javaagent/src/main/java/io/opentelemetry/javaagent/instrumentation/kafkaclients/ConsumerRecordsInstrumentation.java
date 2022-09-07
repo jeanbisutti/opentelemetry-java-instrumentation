@@ -64,6 +64,8 @@ public class ConsumerRecordsInstrumentation implements TypeInstrumentation {
         @Advice.This ConsumerRecords<?, ?> records,
         @Advice.Return(readOnly = false) Iterable<ConsumerRecord<K, V>> iterable) {
 
+      System.out.println("PRINT - IterableAdvice.wrap");
+
       // it's important not to suppress consumer span creation here because this instrumentation can
       // leak the context and so there may be a leaked consumer span in the context, in which
       // case it's important to overwrite the leaked span instead of suppressing the correct span
@@ -81,6 +83,8 @@ public class ConsumerRecordsInstrumentation implements TypeInstrumentation {
         @Advice.This ConsumerRecords<?, ?> records,
         @Advice.Return(readOnly = false) List<ConsumerRecord<K, V>> list) {
 
+      System.out.println("PRINT -  ListAdvice.wrap");
+
       // it's important not to suppress consumer span creation here because this instrumentation can
       // leak the context and so there may be a leaked consumer span in the context, in which
       // case it's important to overwrite the leaked span instead of suppressing the correct span
@@ -97,6 +101,8 @@ public class ConsumerRecordsInstrumentation implements TypeInstrumentation {
     public static <K, V> void wrap(
         @Advice.This ConsumerRecords<?, ?> records,
         @Advice.Return(readOnly = false) Iterator<ConsumerRecord<K, V>> iterator) {
+
+      System.out.println("PRINT -  IteratorAdvice.wrap");
 
       // it's important not to suppress consumer span creation here because this instrumentation can
       // leak the context and so there may be a leaked consumer span in the context, in which

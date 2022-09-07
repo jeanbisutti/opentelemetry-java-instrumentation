@@ -36,6 +36,7 @@ public class TracingIterator<K, V> implements Iterator<ConsumerRecord<K, V>> {
 
   public static <K, V> Iterator<ConsumerRecord<K, V>> wrap(
       Iterator<ConsumerRecord<K, V>> delegateIterator, @Nullable Context receiveContext) {
+    System.out.println("PRINT - TracingIterator.wrap");
     if (KafkaClientsConsumerProcessTracing.wrappingEnabled()) {
       return new TracingIterator<>(delegateIterator, receiveContext);
     }
@@ -44,12 +45,15 @@ public class TracingIterator<K, V> implements Iterator<ConsumerRecord<K, V>> {
 
   @Override
   public boolean hasNext() {
+    System.out.println("PRINT - TracingIterator.hasNext");
     closeScopeAndEndSpan();
     return delegateIterator.hasNext();
   }
 
   @Override
   public ConsumerRecord<K, V> next() {
+
+    System.out.println("PRINT - TracingIterator.next");
     // in case they didn't call hasNext()...
     closeScopeAndEndSpan();
 
@@ -68,6 +72,7 @@ public class TracingIterator<K, V> implements Iterator<ConsumerRecord<K, V>> {
   }
 
   private void closeScopeAndEndSpan() {
+    System.out.println("PRINT - TracingIterator.closeScopeAndEndSpan");
     if (currentScope != null) {
       currentScope.close();
       consumerProcessInstrumenter().end(currentContext, currentRequest, null, null);
