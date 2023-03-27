@@ -18,3 +18,4 @@ jobs:
           gu --version
           native-image --version
           ./gradlew nativeTest
+
