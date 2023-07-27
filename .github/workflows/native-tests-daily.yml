@@ -18,8 +18,9 @@ jobs:
           echo "JAVA_HOME: $JAVA_HOME"
           java --version
           gu --version
+          native-image --version
           native-image --initialize-at-build-time=org.junit.jupiter.engine.config.InstantiatingConfigurationParameterConverter \
-         ./gradlew nativeTest
+          ./gradlew nativeTest
 
   workflow-notification:
     needs:
