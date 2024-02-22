@@ -30,8 +30,8 @@ jobs:
 
   workflow-notification:
     needs:
-      - build
-    if: always()
+      - graalvm-native-tests
+    if: github.event.schedule == '0 4 * * *'
     uses: ./.github/workflows/reusable-workflow-notification.yml
     with:
       success: ${{ needs.build.result == 'success' }}
