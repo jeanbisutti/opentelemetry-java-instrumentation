@@ -10,7 +10,7 @@ on:
 
 jobs:
   build:
-    if: ${{ github.event.label.name == 'native-test' || github.event.label.name == 'native-test' || github.event.label.name == 'spring boot starter'
+    if: ${{ github.event.label.name == 'native" || github.event.label.name == 'spring boot starter'
          || github.event.schedule == "0 4 * * *"  || github.event_name == 'workflow_dispatch'}}
     runs-on: ubuntu-latest
     steps:
