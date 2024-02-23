@@ -10,6 +10,7 @@ forwards Logback log events to the
 
 Replace `OPENTELEMETRY_VERSION` with the [latest
 release](https://search.maven.org/search?q=g:io.opentelemetry.instrumentation%20AND%20a:opentelemetry-logback-appender-1.0).
+test
 
 For Maven, add to your `pom.xml` dependencies:
 
