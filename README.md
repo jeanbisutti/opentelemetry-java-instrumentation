@@ -9,6 +9,7 @@
     <a href="https://github.com/open-telemetry/opentelemetry-java-instrumentation/discussions">Getting In Touch</a>
   </strong>
 </p>
+test*
 
 <p align="center">
   <a href="https://github.com/open-telemetry/opentelemetry-java-instrumentation/actions/workflows/build.yml">
