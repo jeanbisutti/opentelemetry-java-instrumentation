@@ -9,11 +9,3 @@ on:
 jobs:
   graalvm-native-tests:
     uses: ./.github/workflows/reusable-native-tests
-
-  workflow-notification:
-    needs:
-      - graalvm-native-tests
-    if: always()
-    uses: ./.github/workflows/reusable-workflow-notification.yml
-    with:
-      success: ${{ needs.build.result == 'success' }}
