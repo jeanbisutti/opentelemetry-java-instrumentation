@@ -7,5 +7,3 @@ test native:
           - instrumentation/spring/**
           - smoke-tests-otel-starter/**
       - all-globs-to-all-files: '!instrumentation/spring/**/javaagent/**'
-- any:
-  - head-branch: ['^renovate']
