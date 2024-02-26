@@ -11,6 +11,7 @@ import io.opentelemetry.instrumentation.jdbc.internal.DbRequest;
 import io.opentelemetry.instrumentation.jdbc.internal.dbinfo.DbInfo;
 import javax.sql.DataSource;
 
+
 /** Entrypoint for instrumenting a JDBC DataSources. */
 public final class JdbcTelemetry {
 
