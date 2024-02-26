@@ -12,6 +12,7 @@ apply(from = "version.gradle.kts")
 nexusPublishing {
   packageGroup.set("io.opentelemetry")
 
+
   repositories {
     sonatype {
       username.set(System.getenv("SONATYPE_USER"))
