@@ -87,6 +87,7 @@ class OtelSpringStarterSmokeTest {
   @Test
   void shouldSendTelemetry() throws InterruptedException {
 
+    
     testRestTemplate.getForObject(OtelSpringStarterSmokeTestController.URL, String.class);
 
     Thread.sleep(5_000); // Sleep time could be potentially reduced and perhaps removed with
