@@ -6,4 +6,7 @@ test native:
           - instrumentation/jdbc/library/**
           - instrumentation/spring/**
           - smoke-tests-otel-starter/**
-      - all-globs-to-all-files: '!instrumentation/spring/**/javaagent/**'
+          - **/build.gradle
+          - **/build.gradle.kts
+      - all-globs-to-all-files: 
+          - '!instrumentation/spring/**/javaagent/**'
